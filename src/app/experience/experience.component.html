@@ -1,0 +1,66 @@
+<div class="max-container">
+  <h3>Experience</h3>
+
+  <div class="container">
+    <form #experienceForm="ngForm" (ngSubmit)="onSubmit(experienceForm)">
+      <div data-mdb-input-init class="form-outline mb-4">
+        <select id="id" name="id" [(ngModel)]="formData.id" class="form-control" required>
+          <option value="" disabled selected>Select</option>
+          <option *ngFor="let id of experienceDataIds" [value]="id">{{ id }}</option>
+        </select>
+        <label class="form-label" for="id">Employee ID</label>
+      </div>
+
+      <div data-mdb-input-init class="form-outline mb-4">
+        <input type="text" id="lastcomp1" name="lastcomp1" [(ngModel)]="formData.lastcomp1" class="form-control" required />
+        <label class="form-label" for="lastcomp1">Last Company</label>
+      </div>
+
+      <div data-mdb-input-init class="form-outline mb-4">
+        <label class="form-label" for="roles1">Role 1</label>
+        <select id="roles1" name="roles1" [(ngModel)]="formData.roles1" class="form-control" required>
+          <option value="" disabled selected>Select</option>
+          <option value="Developer">Developer</option>
+          <option value="Tester">Tester</option>
+          <option value="Designer">Designer</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-check-label" for="tenure1">Tenure</label>
+        <span class="_yrs" id="slider-label1"></span>
+        <input type="range" class="form-range" min="1" max="20" value="1" [(ngModel)]="formData.tenure1" id="tenure1" name="tenure1" required>
+        <div class="d-flex justify-content-between">
+          <span class="max-amount f-16 font-weight-normal darkGray-color text-right mt-1">1 yr.</span>
+          <span class="max-amount f-16 font-weight-normal darkGray-color text-right mt-1">20 yrs.</span>
+        </div>
+      </div>
+
+      <div data-mdb-input-init class="form-outline mb-4">
+        <input type="text" id="lastcomp2" name="lastcomp2" [(ngModel)]="formData.lastcomp2" class="form-control" required />
+        <label class="form-label" for="lastcomp2">Second Last Company</label>
+      </div>
+
+      <div data-mdb-input-init class="form-outline mb-4">
+        <label class="form-label" for="roles2">Role 2</label>
+        <select id="roles2" name="roles2" [(ngModel)]="formData.roles2" class="form-control" required>
+          <option value="" disabled selected>Select</option>
+          <option value="Developer">Developer</option>
+          <option value="Tester">Tester</option>
+          <option value="Designer">Designer</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <span class="_yrs" id="slider-label2"></span>
+        <input type="range" class="form-range" min="1" max="20" [defaultValue]="1" [(ngModel)]="formData.tenure2" id="tenure2" name="tenure2" required>
+        <div class="d-flex justify-content-between">
+          <span class="max-amount f-16 font-weight-normal darkGray-color text-right mt-1">1 yr.</span>
+          <span class="max-amount f-16 font-weight-normal darkGray-color text-right mt-1">20 yrs.</span>
+        </div>
+      </div>
+
+      <button data-mdb-ripple-init type="submit" class="btn btn-dark btn-block mb-4">Submit</button>
+    </form>
+  </div>
+</div>

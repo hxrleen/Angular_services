@@ -17,41 +17,19 @@ export class FamilyComponent implements OnInit {
   }
 
   onSubmit(form: NgForm): void {
-    if (this.isValidFormData(form.value)) {
+    if (this.dataService.isValidFormData(form.value, 'family')) {
       if (form.value.id) {
-        this.dataService.updateFamilyData(form.value);
+        this.dataService.updateData(form.value, 'family');
       } else {
-        this.dataService.addFamilyData(form.value);
-        this.router.navigate(['home/education']);
+        this.dataService.addData(form.value, 'family');
+        this.router.navigate(['home', 'education']);
       }
-      this.resetFormData();
+      this.dataService.resetFormData();
     } else {
       alert('Please fill out all fields.');
     }
   }
-  // // formData: any = { id: '' };
-  // // personalDataIds: string[] = [];
-  // // ngOnInit(): void {
-  // //   this.dataService.personalData$.subscribe((personalData) => {
-  // //     this.personalDataIds = personalData.map((data) => data.id);
-  // //   });
-  // //   this.dataService.familyformData$.subscribe((formData) => {
-  // //     this.formData = { ...formData };
-  // //   });
-  // // }
-  private isValidFormData(data: any): boolean {
-    return (
-      data.fathersName &&
-      data.fatherDOB &&
-      data.motherName &&
-      data.motherDOB &&
-      data.spouseName &&
-      data.spouseDOB
-    );
-  }
-  resetFormData() {
-    this.dataService.setSelectedEntry({});
-  }
+
   get formData(): any {
     return this.dataService.getSelectedEntry();
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
+import { Router } from '@angular/router';
 import {
   AUTO_STYLE,
   animate,
@@ -30,7 +31,7 @@ export class TablesComponent implements OnInit {
   educationDataArray: any[] = [];
   experienceDataArray: any[] = [];
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private router: Router) {}
 
   collapsed = true;
 
@@ -47,75 +48,45 @@ export class TablesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.personalDataArray = this.dataService.getPersonalData();
-    this.familyDataArray = this.dataService.getFamilyData();
-    this.educationDataArray = this.dataService.getEducationData();
-    this.experienceDataArray = this.dataService.getExperienceData();
-
-    // this.dataService.personalData$.subscribe(
-    //   (data) => (this.personalDataArray = data)
-    // );
-    // this.dataService.familyData$.subscribe(
-    //   (data) => (this.familyDataArray = data)
-    // );
-    // this.dataService.educationData$.subscribe(
-    //   (data) => (this.educationDataArray = data)
-    // );
-    // this.dataService.experienceData$.subscribe(
-    //   (data) => (this.experienceDataArray = data)
-    // );
+    this.personalDataArray = this.dataService.getData('personal');
+    this.familyDataArray = this.dataService.getData('family');
+    this.educationDataArray = this.dataService.getData('education');
+    this.experienceDataArray = this.dataService.getData('experience');
 
     this.refreshData();
   }
 
   //delete-------------------------------------------------------------
 
-  deletePersonalData(id: string): void {
-    this.dataService.deletePersonalData(id);
-    this.refreshData();
-  }
-
-  deleteFamilyData(id: string): void {
-    this.dataService.deleteFamilyData(id);
-    this.refreshData();
-  }
-
-  // deleteFamilyData(id: string): void {
-  //   this.dataService.deleteFamilyData(id);
-  // }
-
-  deleteEducationData(id: string): void {
-    this.dataService.deleteEducationData(id);
-    this.refreshData();
-  }
-
-  deleteExperienceData(id: string): void {
-    this.dataService.deleteExperienceData(id);
+  deleteData(id: string, type: string) {
+    this.dataService.deleteData(id, type);
     this.refreshData();
   }
 
   //edit----------------------------------------------------------------
 
-  editPersonalData(formData: any): void {
-    this.dataService.setSelectedEntry({ ...formData });
-  }
-
-  editFamilyData(formData: any): void {
-    this.dataService.setSelectedEntry({ ...formData });
-  }
-
-  editEducationData(formData: any): void {
-    this.dataService.setSelectedEntry({ ...formData });
-  }
-
-  editExperienceData(formData: any): void {
+  editData(formData: any, type: string) {
+    switch (type) {
+      case 'personal':
+        this.router.navigate(['home', 'personal']);
+        break;
+      case 'family':
+        this.router.navigate(['home', 'family']);
+        break;
+      case 'education':
+        this.router.navigate(['home', 'education']);
+        break;
+      case 'experience':
+        this.router.navigate(['home', 'experience']);
+        break;
+    }
     this.dataService.setSelectedEntry({ ...formData });
   }
 
   refreshData() {
-    this.personalDataArray = this.dataService.getPersonalData();
-    this.familyDataArray = this.dataService.getFamilyData();
-    this.educationDataArray = this.dataService.getEducationData();
-    this.experienceDataArray = this.dataService.getExperienceData();
+    this.personalDataArray = this.dataService.getData('personal');
+    this.familyDataArray = this.dataService.getData('family');
+    this.educationDataArray = this.dataService.getData('education');
+    this.experienceDataArray = this.dataService.getData('experience');
   }
 }

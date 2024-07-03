@@ -23,130 +23,161 @@ export class DataService {
   // Personal data
 
   constructor() {
-    const savedPersonalData = JSON.parse(
+    this.personalData = JSON.parse(
       localStorage.getItem('personalData') || '[]'
     );
-    this.personalData = savedPersonalData;
 
-    const savedFamilyData = JSON.parse(
-      localStorage.getItem('familyData') || '[]'
-    );
-    this.familyData = savedFamilyData;
+    this.familyData = JSON.parse(localStorage.getItem('familyData') || '[]');
 
-    const savedEducationData = JSON.parse(
+    this.educationData = JSON.parse(
       localStorage.getItem('educationData') || '[]'
     );
-    this.educationData = savedEducationData;
 
-    const savedExperienceData = JSON.parse(
+    this.experienceData = JSON.parse(
       localStorage.getItem('experienceData') || '[]'
     );
-    this.experienceData = savedExperienceData;
 
-    const savedEmployeeData = JSON.parse(
-      localStorage.getItem('employeeId') || '[]'
-    );
-    this.empId = savedEmployeeData;
+    this.empId = JSON.parse(localStorage.getItem('employeeId') || '[]');
   }
 
-  getPersonalData() {
-    return this.personalData;
+  //validate formdata
+
+  isValidFormData(data: any, type: string): boolean {
+    switch (type) {
+      case 'personal':
+        return (
+          data.name &&
+          data.dob &&
+          data.address &&
+          data.designation &&
+          data.password
+        );
+
+      case 'family':
+        return (
+          data.fathersName &&
+          data.fatherDOB &&
+          data.motherName &&
+          data.motherDOB &&
+          data.spouseName &&
+          data.spouseDOB
+        );
+      case 'education':
+        return (
+          data.id &&
+          data.highdeg1 &&
+          data.highdeg2 &&
+          data.stream1 &&
+          data.stream2 &&
+          data.marks1 &&
+          data.marks2 &&
+          data.university1 &&
+          data.university2
+        );
+      case 'experience':
+        return (
+          data.id &&
+          data.lastcomp1 &&
+          data.tenure1 &&
+          data.lastcomp2 &&
+          data.tenure2 &&
+          data.roles1 &&
+          data.roles2
+        );
+      default:
+        console.error('error');
+        return false;
+    }
   }
 
-  getFamilyData() {
-    return this.familyData;
-  }
-
-  getEducationData() {
-    return this.educationData;
-  }
-
-  getExperienceData() {
-    return this.experienceData;
+  getData(type: string) {
+    switch (type) {
+      case 'personal':
+        return this.personalData;
+      case 'family':
+        return this.familyData;
+      case 'education':
+        return this.educationData;
+      case 'experience':
+        return this.experienceData;
+      default:
+        console.error('error');
+        return [];
+    }
   }
 
   getEmployeeId() {
     return this.empId;
   }
 
-  // public personalDataSubject = new BehaviorSubject<PersonalData[]>(
-  //   this.getDataFromLocalStorage('personalData')
-  // );
+  updateData(newData: any, type: string): void {
+    let dataArray: any[] = [];
+    let localStorageKey = '';
 
-  // personalData$ = this.personalDataSubject.asObservable();
+    switch (type) {
+      case 'personal':
+        dataArray = this.personalData;
+        localStorageKey = 'personalData';
+        break;
+      case 'family':
+        dataArray = this.familyData;
+        localStorageKey = 'familyData';
+        break;
+      case 'education':
+        dataArray = this.educationData;
+        localStorageKey = 'educationData';
+        break;
+      case 'experience':
+        dataArray = this.experienceData;
+        localStorageKey = 'experienceData';
+        break;
+      default:
+        console.error('error');
+        return;
+    }
 
-  // private personalformDataSubject = new BehaviorSubject<any>({});
-  // personalformData$ = this.personalformDataSubject.asObservable();
-
-  // Family data
-  // public familyDataSubject = new BehaviorSubject<any[]>(
-  //   this.getDataFromLocalStorage('familyData')
-  // );
-  // familyData$ = this.familyDataSubject.asObservable();
-
-  // private familyformDataSubject = new BehaviorSubject<any>({});
-  // familyformData$ = this.familyformDataSubject.asObservable();
-
-  // Education data
-  // public educationDataSubject = new BehaviorSubject<any[]>(
-  //   this.getDataFromLocalStorage('educationData')
-  // );
-  // educationData$ = this.educationDataSubject.asObservable();
-
-  // private educationformDataSubject = new BehaviorSubject<any>({});
-  // educationformData$ = this.educationformDataSubject.asObservable();
-
-  // Experience data
-  // private experienceDataSubject = new BehaviorSubject<any[]>(
-  //   this.getDataFromLocalStorage('experienceData')
-  // );
-  // experienceData$ = this.experienceDataSubject.asObservable();
-
-  // private experienceformDataSubject = new BehaviorSubject<any>({});
-  // experienceformData$ = this.experienceformDataSubject.asObservable();
-
-  // private experienceformDataSource = new BehaviorSubject<any>({});
-  // experienceData: any[] = [];
-
-  // Get and set local storage data
-  // private getDataFromLocalStorage(key: string): any[] {
-  //   return JSON.parse(localStorage.getItem(key) || '[]');
-  // }
-
-  // private setDataToLocalStorage(key: string, data: any[]): void {
-  //   localStorage.setItem(key, JSON.stringify(data));
-  // }
-
-  // Update data general
-  // private updateData(
-  //   subject: BehaviorSubject<any[]>,
-  //   key: string,
-  //   newData: any
-  // ): void {
-  //   const updatedData = [...subject.value, newData];
-  //   subject.next(updatedData);
-  //   this.setDataToLocalStorage(key, updatedData);
-  // }
-
-  //check id exists
-
-  // Personal data methods
-  updatePersonalData(newData: any): void {
-    const index = this.personalData.findIndex((item) => item.id === newData.id);
+    const index = dataArray.findIndex((item) => item.id === newData.id);
     if (index !== -1) {
-      this.personalData[index] = { ...newData };
-      localStorage.setItem('personalData', JSON.stringify(this.personalData));
+      dataArray[index] = { ...newData };
+      localStorage.setItem(localStorageKey, JSON.stringify(dataArray));
       alert('Data updated');
     } else {
-      this.addPersonalData(newData);
+      this.addData(newData, type);
     }
   }
 
-  addPersonalData(newData: any): void {
-    this.personalData.push({ ...newData });
-    localStorage.setItem('personalData', JSON.stringify(this.personalData));
+  // ------------------------------------------------------------------------------------------------------
+
+  addData(newData: any, type: String) {
+    switch (type) {
+      case 'personal':
+        this.personalData.push({ ...newData });
+        localStorage.setItem('personalData', JSON.stringify(this.personalData));
+        this.addEmployeeId(newData.id);
+        break;
+      case 'family':
+        this.familyData.push({ ...newData });
+        localStorage.setItem('familyData', JSON.stringify(this.familyData));
+        break;
+      case 'education':
+        this.educationData.push(newData);
+        localStorage.setItem(
+          'educationData',
+          JSON.stringify(this.educationData)
+        );
+        break;
+      case 'experience':
+        this.experienceData.push({ ...newData });
+        localStorage.setItem(
+          'experienceData',
+          JSON.stringify(this.experienceData)
+        );
+        break;
+      default:
+        console.error('Invalid data type');
+        return;
+    }
     alert('Data added');
-    this.addEmployeeId(newData.id);
   }
 
   addEmployeeId(empId: string): void {
@@ -159,189 +190,72 @@ export class DataService {
     }
   }
 
-  // Family data methods
-
-  // updateFamilyData(newData: any): void {
-  // const index = this.familyDataSubject.value.findIndex(
-  //   (item) => item.id === newData.id
-  // );
-  // if (index !== -1) {
-  //   const updatedData = [...this.familyDataSubject.value];
-  //   updatedData[index] = newData;
-  //   this.familyDataSubject.next(updatedData);
-  //   this.setDataToLocalStorage('familyData', updatedData);
-  //   alert('Data updated successfully!');
-  // } else {
-  //   this.addFamilyData(newData);
-  // }
-  // }
-
-  updateFamilyData(newData: any): void {
-    const index = this.familyData.findIndex((item) => item.id === newData.id);
-    if (index !== -1) {
-      this.familyData[index] = { ...newData };
-      localStorage.setItem('familyData', JSON.stringify(this.familyData));
-      alert('Data updated');
-    } else {
-      this.addFamilyData(newData);
-    }
-  }
-
-  addFamilyData(newData: any): void {
-    this.familyData.push({ ...newData });
-    localStorage.setItem('familyData', JSON.stringify(this.familyData));
-    alert('Data added');
-  }
-
-  // addFamilyData(newData: any): void {
-  //   if (this.doesIdExist(this.familyDataSubject, newData.id)) {
-  //     alert(`The ID already exists`);
-  //   } else {
-  //     const updatedData = [...this.familyDataSubject.value, newData];
-  //     this.familyDataSubject.next(updatedData);
-  //     this.setDataToLocalStorage('familyData', updatedData);
-  //     alert('New data added');
-  //   }
-  // }
-
-  // Education data methods
-
-  updateEducationData(newData: any): void {
-    const index = this.educationData.findIndex(
-      (item) => item.id === newData.id
-    );
-    if (index !== -1) {
-      this.educationData[index] = { ...newData };
-      localStorage.setItem('educationData', JSON.stringify(this.educationData));
-      alert('Data updated');
-    } else {
-      this.addEducationData(newData);
-    }
-  }
-
-  addEducationData(newData: any): void {
-    this.educationData.push({ ...newData });
-    localStorage.setItem('educationData', JSON.stringify(this.educationData));
-    alert('Data added');
-  }
-
-  // Experience data methods
-
-  updateExperienceData(newData: any): void {
-    const index = this.experienceData.findIndex(
-      (item) => item.id === newData.id
-    );
-    if (index !== -1) {
-      this.experienceData[index] = { ...newData };
-      localStorage.setItem(
-        'experienceData',
-        JSON.stringify(this.experienceData)
-      );
-      alert('Data updated');
-    } else {
-      this.addExperienceData(newData);
-    }
-  }
-
-  addExperienceData(newData: any): void {
-    this.experienceData.push({ ...newData });
-    localStorage.setItem('experienceData', JSON.stringify(this.experienceData));
-    alert('Data added');
-  }
-
-  // updateExperienceDataAtIndex(index: number, updatedData: any): void {
-  //   this.experienceData[index] = updatedData;
-  //   this.experienceformDataSource.next(updatedData);
-  // }
-
-  // private updateExperienceDataById(updatedData: any): void {
-  //   const updatedExperienceData = this.experienceDataSubject.value.map((item) =>
-  //     item.id === updatedData.id ? updatedData : item
-  //   );
-  //   this.experienceDataSubject.next(updatedExperienceData);
-  //   this.setDataToLocalStorage('experienceData', updatedExperienceData);
-  //   alert('Data updated successfully!');
-  // }
-
   // Delete methods
-  deletePersonalData(id: string): void {
+
+  deleteData(id: string, type: string) {
     if (confirm('Are you sure?')) {
-      this.personalData = this.personalData.filter((data) => data.id !== id);
-      localStorage.setItem('personalData', JSON.stringify(this.personalData));
+      switch (type) {
+        case 'personal':
+          this.personalData = this.personalData.filter(
+            (data) => data.id !== id
+          );
+          localStorage.setItem(
+            'personalData',
+            JSON.stringify(this.personalData)
+          );
 
-      this.familyData = this.familyData.filter((data) => data.id !== id);
-      localStorage.setItem('familyData', JSON.stringify(this.familyData));
+          this.familyData = this.familyData.filter((data) => data.id !== id);
+          localStorage.setItem('familyData', JSON.stringify(this.familyData));
 
-      this.educationData = this.educationData.filter((data) => data.id !== id);
-      localStorage.setItem('educationData', JSON.stringify(this.educationData));
+          this.educationData = this.educationData.filter(
+            (data) => data.id !== id
+          );
+          localStorage.setItem(
+            'educationData',
+            JSON.stringify(this.educationData)
+          );
 
-      this.experienceData = this.experienceData.filter(
-        (data) => data.id !== id
-      );
-      localStorage.setItem(
-        'experienceData',
-        JSON.stringify(this.experienceData)
-      );
+          this.experienceData = this.experienceData.filter(
+            (data) => data.id !== id
+          );
+          localStorage.setItem(
+            'experienceData',
+            JSON.stringify(this.experienceData)
+          );
 
-      this.empId = this.empId.filter((empId) => empId !== id);
-      localStorage.setItem('employeeId', JSON.stringify(this.empId));
+          this.empId = this.empId.filter((empId) => empId !== id);
+          localStorage.setItem('employeeId', JSON.stringify(this.empId));
 
-      // const updatedData = this.personalDataSubject.value.filter(
-      //   (item) => item.id !== id
-      // );
-      // localStorage.setItem('employeeIds', JSON.stringify(this.employeeIds));
-
-      // this.familyDataSubject.next(updatedData);
-      // this.setDataToLocalStorage('familyData', updatedData);
-
-      // this.educationDataSubject.next(updatedData);
-      // this.setDataToLocalStorage('educationData', updatedData);
-
-      // this.experienceDataSubject.next(updatedData);
-      // this.setDataToLocalStorage('experienceData', updatedData);
-
-      // this.empId = this.empId.filter((id) => id !== id);
-      // localStorage.setItem('employeeIds', JSON.stringify(this.empId));
-
-      alert('Data deleted successfully!');
+          alert('Data deleted successfully!');
+          break;
+        case 'family':
+          this.familyData = this.familyData.filter((data) => data.id !== id);
+          localStorage.setItem('familyData', JSON.stringify(this.familyData));
+          break;
+        case 'education':
+          this.educationData = this.educationData.filter(
+            (data) => data.id !== id
+          );
+          localStorage.setItem(
+            'educationData',
+            JSON.stringify(this.educationData)
+          );
+          break;
+        case 'experience':
+          this.experienceData = this.experienceData.filter(
+            (data) => data.id !== id
+          );
+          localStorage.setItem(
+            'experienceData',
+            JSON.stringify(this.experienceData)
+          );
+          break;
+      }
     }
   }
 
-  deleteFamilyData(id: string): void {
-    if (confirm('Are you sure?')) {
-      this.familyData = this.familyData.filter((data) => data.id !== id);
-      localStorage.setItem('familyData', JSON.stringify(this.familyData));
-    }
-  }
-
-  // deleteExperienceData(id: string): void {
-  //   if (confirm('Are you sure?')) {
-  //     const updatedData = this.experienceDataSubject.value.filter(
-  //       (item) => item.id !== id
-  //     );
-  //     this.experienceDataSubject.next(updatedData);
-  //     this.setDataToLocalStorage('experienceData', updatedData);
-  //     alert('Data deleted successfully!');
-  //   }
-  // }
-
-  deleteEducationData(id: string): void {
-    if (confirm('Are you sure?')) {
-      this.educationData = this.educationData.filter((data) => data.id !== id);
-      localStorage.setItem('educationData', JSON.stringify(this.educationData));
-    }
-  }
-
-  deleteExperienceData(id: string): void {
-    if (confirm('Are you sure?')) {
-      this.experienceData = this.experienceData.filter(
-        (data) => data.id !== id
-      );
-      localStorage.setItem(
-        'experienceData',
-        JSON.stringify(this.experienceData)
-      );
-    }
+  resetFormData() {
+    this.setSelectedEntry({});
   }
 
   // Edit methods
@@ -352,20 +266,4 @@ export class DataService {
   getSelectedEntry(): any {
     return this.formData;
   }
-
-  // setPersonalFormData(formData: any): void {
-  //   this.personalformDataSubject.next(formData);
-  // }
-
-  // setFamilyFormData(formData: any): void {
-  //   this.familyformDataSubject.next(formData);
-  // }
-
-  // setEducationFormData(formData: any): void {
-  //   this.educationformDataSubject.next(formData);
-  // }
-
-  // setExperienceFormData(formData: any): void {
-  //   this.experienceformDataSubject.next(formData);
-  // }
 }

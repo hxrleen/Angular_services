@@ -19,7 +19,7 @@
       <div data-mdb-input-init class="form-outline mb-4">
         <label class="form-label" for="roles1">Role 1</label>
         <select id="roles1" name="roles1" [(ngModel)]="formData.roles1" class="form-control" required>
-          <option value="" disabled selected>Select</option>
+          <option value=""disabled selected>Select</option>
           <option value="Developer">Developer</option>
           <option value="Tester">Tester</option>
           <option value="Designer">Designer</option>
@@ -53,7 +53,7 @@
 
       <div class="mb-4">
         <span class="_yrs" id="slider-label2"></span>
-        <input type="range" class="form-range" min="1" max="20" [defaultValue]="1" [(ngModel)]="formData.tenure2" id="tenure2" name="tenure2" required>
+        <input type="range" class="form-range" min="1" max="20" [(ngModel)]="formData.tenure2" id="tenure2" name="tenure2" required>
         <div class="d-flex justify-content-between">
           <span class="max-amount f-16 font-weight-normal darkGray-color text-right mt-1">1 yr.</span>
           <span class="max-amount f-16 font-weight-normal darkGray-color text-right mt-1">20 yrs.</span>

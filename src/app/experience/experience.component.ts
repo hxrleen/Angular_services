@@ -38,14 +38,14 @@ export class ExperienceComponent implements OnInit {
   }
 
   onSubmit(form: NgForm): void {
-    if (this.isValidFormData(form.value)) {
+    if (this.dataService.isValidFormData(form.value, 'experience')) {
       if (form.value.id) {
-        this.dataService.updateExperienceData(form.value);
+        this.dataService.updateData(form.value, 'experience');
       } else {
-        this.dataService.addExperienceData(form.value);
-        this.router.navigate(['home/homepage']);
+        this.dataService.addData(form.value, 'experience');
+        this.router.navigate(['home', 'homepage']);
       }
-      this.resetFormData();
+      this.dataService.resetFormData();
     } else {
       alert('Please fill out all fields.');
     }
@@ -84,22 +84,6 @@ export class ExperienceComponent implements OnInit {
     this.renderer.setStyle(span, 'margin-left', `${marginValue}%`);
     let _yrsTxt = parseInt(slider.value) < 10 ? 'yr.' : 'yrs.';
     span.innerHTML = `${slider.value} ${_yrsTxt}`;
-  }
-
-  private isValidFormData(data: ExperienceFormData): any {
-    return (
-      data.id &&
-      data.lastcomp1 &&
-      data.tenure1 &&
-      data.lastcomp2 &&
-      data.tenure2 &&
-      data.roles1 &&
-      data.roles2
-    );
-  }
-
-  resetFormData() {
-    this.dataService.setSelectedEntry({});
   }
 
   get formData(): any {

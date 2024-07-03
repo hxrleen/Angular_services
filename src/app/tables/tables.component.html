@@ -33,10 +33,10 @@
             <td>{{ formData.dob | date: 'dd/MM/yyyy' }}</td>
             <td>{{ formData.designation }}</td>
             <td>
-              <button (click)="editPersonalData(formData)">
+              <button (click)="editData(formData,'personal')">
                 <i class="material-icons" style="font-size:28px;">edit</i>
               </button>
-              <button (click)="deletePersonalData(formData.id)">
+              <button (click)="deleteData(formData.id,'personal')">
                 <i class="material-icons" style="font-size:28px;color:red">delete</i>
               </button>
             </td>
@@ -83,8 +83,8 @@
               <td>{{ formData.spouseName }}</td>
               <td>{{ formData.spouseDOB | date: 'dd/MM/yyyy'}}</td>
               <td>
-                <button (click)="editFamilyData(formData)"><i class="material-icons" style="font-size:28px;">edit</i></button>
-                <button (click)="deleteFamilyData(formData.id)"><i class="material-icons" style="font-size:28px;color:red">delete</i></button>
+                <button (click)="editData(formData,'family')"><i class="material-icons" style="font-size:28px;">edit</i></button>
+                <button (click)="deleteData(formData.id,'family')"><i class="material-icons" style="font-size:28px;color:red">delete</i></button>
               </td>
             </tr>
           </tbody>
@@ -131,8 +131,8 @@
               <td>{{ formData.marks2 | demo}}</td>
               <td>{{ formData.university2}}</td>
               <td>
-                <button (click)="editEducationData(formData)"><i class="material-icons" style="font-size:28px;">edit</i></button>
-                <button (click)="deleteEducationData(formData.id)"><i class="material-icons" style="font-size:28px;color:red">delete</i></button>
+                <button (click)="editData(formData,'education')"><i class="material-icons" style="font-size:28px;">edit</i></button>
+                <button (click)="deleteData(formData.id,'education')"><i class="material-icons" style="font-size:28px;color:red">delete</i></button>
               </td>
             </tr>
           </tbody>
@@ -174,8 +174,8 @@
               <td>{{formData.roles2}}</td>
               <td>{{formData.tenure2 | year}}</td>
               <td>
-                <button (click)="editExperienceData(formData)"><i class="material-icons" style="font-size:28px;">edit</i></button>
-                <button (click)="deleteExperienceData(formData.id)"><i class="material-icons" style="font-size:28px;color:red">delete</i></button>
+                <button (click)="editData(formData,'experience')"><i class="material-icons" style="font-size:28px;">edit</i></button>
+                <button (click)="deleteData(formData.id,'experience')"><i class="material-icons" style="font-size:28px;color:red">delete</i></button>
               </td>
             </tr>
           </tbody>

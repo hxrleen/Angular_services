@@ -12,7 +12,8 @@ export class AuthService {
       (user) => user.name === username && user.password === password
     );
 
-    if (username === 'abc' && password === 'pass') {
+    if (username == 'abc' && password == 'pass') {
+      // if(user){                                        // uncomment this line
       sessionStorage.setItem('isLoggedIn', 'true');
       sessionStorage.setItem('username', username);
       return true;
